@@ -9,7 +9,7 @@ app.use(morgan('combine'))
 app.use(bodyParser.json())
 app.use(cors())
 require('./routes')(app)
-sequelize.sync()
+sequelize.sync({force: false})
   .then(() => {
     app.listen(config.port || 8081)
     console.log(`server started at port ${config.port}`)
