@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js src/app.js"
+    "start": "./node_modules/nodemon/bin/nodemon.js src/app.js",
+    "seed": "node ./src/seed"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,8 @@
     "lint": "^1.1.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.18.3",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
     "sequelize": "^4.8.0",
     "sqlite3": "^3.1.8"
   },
