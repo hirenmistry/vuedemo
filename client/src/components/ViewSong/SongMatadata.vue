@@ -35,16 +35,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isUserLoggedIn'])
+    ...mapState(['isUserLoggedIn', 'user'])
   },
   methods: {
     async setAsBookmark () {
       try {
         this.bookmark = (await BookmarksService.post({
-          songid: this.$store.state.route.params.songId,
-          userid: this.$store.state.user.id
+          songid: this.$store.state.route.params.songId
         })).data
-        console.log('newbookmarkis:', this.bookmark)
       } catch (err) {
         console.log('error:', err)
       }
@@ -66,10 +64,10 @@ export default {
         if (!this.isUserLoggedIn) {
           return
         }
-        this.bookmark = (await BookmarksService.index({
-          songid: this.song.id,
-          userid: this.$store.state.user.id
-        })).data
+        const bookmarks = (await BookmarksService.index()).data
+        if (bookmarks.length) {
+          this.bookmark = bookmarks[0]
+        }
       } catch (err) {
         console.log('error:', err)
       }

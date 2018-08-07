@@ -1,30 +1,22 @@
 <template>
   <panel title="Songs">
-        <v-btn class='cyan accent-2' light medium absolute right middle fab slot="action" :to="{name: 'songs-create'}">
-          <v-icon>add</v-icon>
-        </v-btn>
-      <div class='song' v-for="song in songs" :key="song.id">
-        <v-layout>
-          <v-flex x6>
-            <div class='song-title'>
-              {{song.title}}
-            </div>
-            <div class='song-artist'>
-              {{song.artist}}
-            </div>
-            <div class='song-genre'>
-              {{song.genre}}
-            </div>
-            <v-btn class='cyan' dark :to="{
-              name:'song',
-              params:  {songId: song.id}
-              }">View</v-btn>
-          </v-flex>
-          <v-flex x6>
-            <img class='album-image' :src='song.albumImageUrl' />
-          </v-flex>
-        </v-layout>
-      </div>
+      <v-btn class='cyan accent-2' light medium absolute right middle fab slot="action" :to="{name: 'songs-create'}">
+        <v-icon>add</v-icon>
+      </v-btn>
+      <v-data-table :headers='headers' :pagination.sync='pagination' :items='songs'>
+            <template slot='items' slot-scope='props'>
+              <td class='text-xs-right'>
+                <img class='album-image' :src='props.item.albumImageUrl' />
+              </td>
+              <td class='text-xs-right'>{{props.item.title}}</td>
+              <td class='text-xs-right'>{{props.item.artist}}</td>
+              <td class='text-xs-right'>{{props.item.genre}}</td>
+              <td class='text-xs-right'>
+                <v-btn class="cyan" dark :to="{name: 'song', params: { songId: props.item.id}}">View</v-btn>
+                <!-- <router-link tag='v-btn' light class='cyan' :to="{name: 'song', params: { songId: props.item.id}}">View</router-link> -->
+              </td>
+            </template>
+        </v-data-table>
   </panel>
 </template>
 <script>
@@ -32,11 +24,41 @@ import SongsService from '@/services/SongsService'
 export default {
   data () {
     return {
-      songs: null
+      songs: [],
+      headers: [
+        {
+          text: 'Image',
+          value: 'image',
+          sortable: false
+
+        },
+        {
+          text: 'Title',
+          value: 'title'
+        },
+        {
+          text: 'Artist',
+          value: 'artist'
+        },
+        {
+          text: 'Genre',
+          value: 'genre'
+        },
+        {
+          text: 'Action',
+          value: 'action',
+          sortable: false
+        }
+      ],
+      pagination: {
+        sortBy: 'id',
+        descending: true
+      }
     }
   },
   async mounted () {
     this.songs = (await SongsService.index()).data
+    console.log(this.songs)
   },
   watch: {
     '$route.query.search': {
