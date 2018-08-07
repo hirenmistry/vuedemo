@@ -21,7 +21,6 @@
 </template>
 <script>
 import SongsService from '@/services/SongsService'
-import Panel from '@/components/Panel'
 import SongMatadata from '@/components/ViewSong/SongMatadata'
 import YouTube from '@/components/ViewSong/YouTube'
 import Lyrics from '@/components/ViewSong/Lyrics'
@@ -35,10 +34,8 @@ export default {
   async mounted () {
     const songId = this.$store.state.route.params.songId
     this.song = (await SongsService.show(songId)).data
-    console.log('this.song:', this.song)
   },
   components: {
-    Panel,
     SongMatadata,
     YouTube,
     Lyrics,
